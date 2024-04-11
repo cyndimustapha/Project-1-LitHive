@@ -211,12 +211,16 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
       bookDetailsModal.show();
 
+      const close = document.querySelector('.modal .close');
+
+      close.addEventListener('click', function() {
+        const modal = document.getElementById('bookDetailsModal');
+        const modalInstance = bootstrap.Modal.getInstance(modal);
+        modalInstance.hide();
+    });
+
   }
 
-  document.querySelector('.modal .close').addEventListener('click', function() {
-    const modal = document.getElementById('bookDetailsModal');
-    const modalInstance = bootstrap.Modal.getInstance(modal);
-    modalInstance.hide();
-});
+
 });
 
