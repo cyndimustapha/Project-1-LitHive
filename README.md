@@ -30,7 +30,7 @@ Git clone https://github.com/cyndimustapha/Project-1-LitHive.git
 ```
 
 # Live Link
-
+https://cyndimustapha.github.io/Project-1-LitHive/
 
 ## Technologies Used
 HTML

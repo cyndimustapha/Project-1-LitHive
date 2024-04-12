@@ -363,7 +363,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Event listener for Library link
-  document.getElementById("libraryLink").addEventListener("click", function () {
+  const libraryLink = document.getElementById("libraryLink");
+  libraryLink.addEventListener("click", function () {
     // Clear previous library display
     libraryContainer.innerHTML = "";
 
@@ -374,7 +375,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to render the user's library
   function displayUserLibrary() {
     if (userLibrary.length === 0) {
-      console.log("empty");
       libraryContainer.innerHTML = "<p>Your library is empty. Add some books!</p>";
     } else {
       userLibrary.forEach((book) => {
