@@ -18,7 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchForm = document.querySelector(".navbar form");
   const searchInput = document.querySelector('.navbar input[type="search"]');
   const popularBooksContainer = document.getElementById("popularBooks");
+  const libraryContainer = document.getElementById("libraryContainer");
   const bookDetailsModal = new bootstrap.Modal(document.getElementById("bookDetailsModal"));
+
+  //array to store books added by the user
+  let userLibrary = [];
 
   // Define an array of books to fetch from the Open Library API
   const booksToFetch = [
@@ -50,9 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
             : "No description available",
           publishDate: firstResult.first_publish_year ? firstResult.first_publish_year : "Unknown",
           edition: firstResult.edition_key ? firstResult.edition_key : "Unknown",
-          numPages: firstResult.number_of_pages_median ? firstResult.number_of_pages_median : "Unknown",
+          numPages: firstResult.number_of_pages_median
+            ? firstResult.number_of_pages_median
+            : "Unknown",
           genres: firstResult.subject ? firstResult.subject.join(", ") : "Unknown",
-          ratings: firstResult.ratings_average ? firstResult.ratings_average : "Unknown"
+          ratings: firstResult.ratings_average ? firstResult.ratings_average : "Unknown",
         };
       } else {
         return null; // Book not found
@@ -86,6 +92,18 @@ document.addEventListener("DOMContentLoaded", function () {
                   data-genres="${bookDetails.genres}"
                   data-ratings="${bookDetails.ratings}">
                   View Details
+                </button>
+                <button class="btn btn-primary add-to-list" 
+                  data-title="${bookDetails.title}" 
+                  data-author="${bookDetails.author}" 
+                  data-cover="${bookDetails.coverUrl}" 
+                  data-description="${bookDetails.description}" 
+                  data-publish-date="${bookDetails.publishDate}" 
+                  data-edition="${bookDetails.edition}" 
+                  data-num-pages="${bookDetails.numPages}" 
+                  data-genres="${bookDetails.genres}"
+                  data-ratings="${bookDetails.ratings}">
+                  +
                 </button>
               </div>
             </div>
@@ -124,6 +142,41 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
     });
+
+    // Attach event listeners to add to list buttons
+    const addToListButtons = document.querySelectorAll(".add-to-list");
+    addToListButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const title = this.getAttribute("data-title");
+        const author = this.getAttribute("data-author");
+        const coverUrl = this.getAttribute("data-cover");
+        const description = this.getAttribute("data-description");
+        const publishDate = this.getAttribute("data-publish-date");
+        const edition = this.getAttribute("data-edition");
+        const numPages = this.getAttribute("data-num-pages");
+        const genres = this.getAttribute("data-genres");
+        const ratings = this.getAttribute("data-ratings");
+
+        // Create a book object
+        const book = {
+          title,
+          author,
+          coverUrl,
+          description,
+          publishDate,
+          edition,
+          numPages,
+          genres,
+          ratings,
+        };
+
+        // Add the book to the user's list
+        userLibrary.push(book);
+
+        // Optionally, provide feedback to the user that the book has been added to their list
+        alert("Book added to your list!");
+      });
+    });
   }
 
   // Call the rendering function to fetch and display book details on page load
@@ -157,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const description = book.first_sentence
               ? book.first_sentence
               : "No description available";
-            const publishDate = book.first_publish_year? book.first_publish_year : "Unknown";
+            const publishDate = book.first_publish_year ? book.first_publish_year : "Unknown";
             const edition = book.edition_key ? book.edition_key : "Unknown";
             const numPages = book.number_of_pages_median ? book.number_of_pages_median : "Unknown";
             const genres = book.subject ? book.subject.join(", ") : "Unknown";
@@ -181,6 +234,18 @@ document.addEventListener("DOMContentLoaded", function () {
                       data-genres="${genres}"
                       data-ratings="${ratings}">
                       View Details
+                    </button>
+                    <button class="btn btn-primary add-to-list" 
+                      data-title="${title}" 
+                      data-author="${author}" 
+                      data-cover="${coverUrl}" 
+                      data-description="${description}" 
+                      data-publish-date="${publishDate}" 
+                      data-edition="${edition}" 
+                      data-num-pages="${numPages}" 
+                      data-genres="${genres}"
+                      data-ratings="${ratings}">
+                      +
                     </button>
                   </div>
                 </div>
@@ -216,6 +281,42 @@ document.addEventListener("DOMContentLoaded", function () {
               });
             });
           });
+
+          // Attach event listeners to add to list buttons
+          const addToListButtons = document.querySelectorAll(".add-to-list");
+          addToListButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+              const title = this.getAttribute("data-title");
+              const author = this.getAttribute("data-author");
+              const coverUrl = this.getAttribute("data-cover");
+              const description = this.getAttribute("data-description");
+              const publishDate = this.getAttribute("data-publish-date");
+              const edition = this.getAttribute("data-edition");
+              const numPages = this.getAttribute("data-num-pages");
+              const genres = this.getAttribute("data-genres");
+              const ratings = this.getAttribute("data-ratings");
+
+              // Create a book object
+              const book = {
+                title,
+                author,
+                coverUrl,
+                description,
+                publishDate,
+                edition,
+                numPages,
+                genres,
+                ratings,
+              };
+
+              // Add the book to the user's list
+              userLibrary.push(book);
+
+              // Optionally, provide feedback to the user that the book has been added to their list
+              alert("Book added to your list!");
+
+            });
+          });
         } else {
           popularBooksContainer.innerHTML = "<p>No books found.</p>";
         }
@@ -228,7 +329,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to display book details in modal
   function displayBookDetails(book) {
-    const { title, author, coverUrl, description, publishDate, edition, numPages, genres, ratings} = book;
+    const {
+      title,
+      author,
+      coverUrl,
+      description,
+      publishDate,
+      edition,
+      numPages,
+      genres,
+      ratings,
+    } = book;
     const modalTitle = document.getElementById("bookTitle");
     const modalAuthor = document.getElementById("bookAuthor");
     const modalDetails = document.getElementById("bookDetails");
@@ -250,4 +361,53 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.addEventListener("click", () => {
     bookDetailsModal.hide();
   });
+
+  // Event listener for Library link
+  document.getElementById("libraryLink").addEventListener("click", function () {
+    // Clear previous library display
+    libraryContainer.innerHTML = "";
+
+    // Render the user's library
+    displayUserLibrary();
+  });
+
+  // Function to render the user's library
+  function displayUserLibrary() {
+    if (userLibrary.length === 0) {
+      console.log("empty");
+      libraryContainer.innerHTML = "<p>Your library is empty. Add some books!</p>";
+    } else {
+      userLibrary.forEach((book) => {
+        const {
+          title,
+          author,
+          coverUrl,
+          description,
+          publishDate,
+          edition,
+          numPages,
+          genres,
+          ratings,
+        } = book;
+        const bookItem = `
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <img src="${coverUrl}" class="card-img-top" alt="${title}">
+              <div class="card-body">
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text"><strong>Author:</strong> ${author}</p>
+                <p><strong>Publish Date:</strong> ${publishDate}</p>
+                <p><strong>Edition:</strong> ${edition}</p>
+                <p><strong>Number of Pages:</strong> ${numPages}</p>
+                <p><strong>Genres:</strong> ${genres}</p>
+                <p><strong>Rating:</strong> ${ratings}</p>
+                <p>${description}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        libraryContainer.innerHTML += bookItem;
+      });
+    }
+  }
 });
