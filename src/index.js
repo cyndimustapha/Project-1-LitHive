@@ -1,20 +1,20 @@
-// Function to toggle dark mode
-function toggleDarkMode() {
-  document.body.classList.remove("bg-light");
-  document.body.classList.add("bg-dark");
-}
-
-// Function to toggle light mode
-function toggleLightMode() {
-  document.body.classList.remove("bg-dark");
-  document.body.classList.add("bg-light");
-}
-
-// Event listener for the dropdown items
-document.getElementById("darkMode").addEventListener("click", toggleDarkMode);
-document.getElementById("lightMode").addEventListener("click", toggleLightMode);
-
 document.addEventListener("DOMContentLoaded", function () {
+  // Function to toggle dark mode
+  function toggleDarkMode() {
+    document.body.classList.remove("bg-light");
+    document.body.classList.add("bg-dark");
+  }
+
+  // Function to toggle light mode
+  function toggleLightMode() {
+    document.body.classList.remove("bg-dark");
+    document.body.classList.add("bg-light");
+  }
+
+  // Event listener for the dropdown
+  document.getElementById("darkMode").addEventListener("click", toggleDarkMode);
+  document.getElementById("lightMode").addEventListener("click", toggleLightMode);
+
   const searchForm = document.querySelector(".navbar form");
   const searchInput = document.querySelector('.navbar input[type="search"]');
   const popularBooksContainer = document.getElementById("popularBooks");
@@ -27,13 +27,17 @@ document.addEventListener("DOMContentLoaded", function () {
     { title: "The House of Hades", author: "Rick Riordan" },
     { title: "Harry Potter and the Chamber of Secrets", author: "J.K. Rowling" },
     { title: "The Maze Runner", author: "James Dashner" },
-    { title: "Me Before You", author: "Jojo Moyes"}
+    { title: "Me Before You", author: "Jojo Moyes" },
   ];
 
   // Function to fetch book details from the Open Library API
   async function fetchBookDetails(book) {
     try {
-      const response = await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(book.title)}&author=${encodeURIComponent(book.author)}`);
+      const response = await fetch(
+        `https://openlibrary.org/search.json?title=${encodeURIComponent(
+          book.title
+        )}&author=${encodeURIComponent(book.author)}`
+      );
       const data = await response.json();
       if (data.docs && data.docs.length > 0) {
         const firstResult = data.docs[0];
@@ -41,7 +45,13 @@ document.addEventListener("DOMContentLoaded", function () {
           title: firstResult.title,
           author: firstResult.author_name ? firstResult.author_name.join(", ") : "Unknown author",
           coverUrl: `https://covers.openlibrary.org/b/id/${firstResult.cover_i}-M.jpg`,
-          description: firstResult.description ? firstResult.description.value : "No description available"
+          description: firstResult.description
+            ? firstResult.description.value
+            : "No description available",
+          publishDate: firstResult.publish_date ? firstResult.publish_date : "Unknown",
+          edition: firstResult.edition_key ? firstResult.edition_key : "Unknown",
+          numPages: firstResult.number_of_pages ? firstResult.number_of_pages : "Unknown",
+          genres: firstResult.subject ? firstResult.subject.join(", ") : "Unknown",
         };
       } else {
         return null; // Book not found
@@ -64,8 +74,17 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="card-body">
                 <h5 class="card-title">${bookDetails.title}</h5>
                 <p class="card-text"><strong>Author:</strong> ${bookDetails.author}</p>
-                <p class="card-text">${bookDetails.description}</p>
-                <button class="btn btn-primary view-details" data-title="${bookDetails.title}" data-author="${bookDetails.author}" data-cover="${bookDetails.coverUrl}" data-description="${bookDetails.description}">View Details</button>
+                <button class="btn btn-primary view-details" 
+                  data-title="${bookDetails.title}" 
+                  data-author="${bookDetails.author}" 
+                  data-cover="${bookDetails.coverUrl}" 
+                  data-description="${bookDetails.description}" 
+                  data-publish-date="${bookDetails.publishDate}" 
+                  data-edition="${bookDetails.edition}" 
+                  data-num-pages="${bookDetails.numPages}" 
+                  data-genres="${bookDetails.genres}">
+                  View Details
+                </button>
               </div>
             </div>
           </div>
@@ -76,6 +95,31 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(`Book '${book.title}' by ${book.author} not found.`);
       }
     }
+    // Attach event listeners to view details buttons
+    const viewDetailsButtons = document.querySelectorAll(".view-details");
+    viewDetailsButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const title = this.getAttribute("data-title");
+        const author = this.getAttribute("data-author");
+        const coverUrl = this.getAttribute("data-cover");
+        const description = this.getAttribute("data-description");
+        const publishDate = this.getAttribute("data-publish-date");
+        const edition = this.getAttribute("data-edition");
+        const numPages = this.getAttribute("data-num-pages");
+        const genres = this.getAttribute("data-genres");
+
+        displayBookDetails({
+          title,
+          author,
+          coverUrl,
+          description,
+          publishDate,
+          edition,
+          numPages,
+          genres,
+        });
+      });
+    });
   }
 
   // Call the rendering function to fetch and display book details on page load
@@ -109,6 +153,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const description = book.description
               ? book.description.value
               : "No description available";
+            const publishDate = book.publish_date ? book.publish_date : "Unknown";
+            const edition = book.edition_key ? book.edition_key : "Unknown";
+            const numPages = book.number_of_pages ? book.number_of_pages : "Unknown";
+            const genres = book.subject ? book.subject.join(", ") : "Unknown";
 
             const bookItem = `
               <div class="col-md-4 mb-4">
@@ -117,8 +165,17 @@ document.addEventListener("DOMContentLoaded", function () {
                   <div class="card-body">
                     <h5 class="card-title">${title}</h5>
                     <p class="card-text"><strong>Author:</strong> ${author}</p>
-                    <p class="card-text">${description}</p>
-                    <button class="btn btn-primary view-details" data-title="${title}" data-author="${author}" data-cover="${coverUrl}" data-description="${description}">View Details</button>
+                    <button class="btn btn-primary view-details" 
+                      data-title="${title}" 
+                      data-author="${author}" 
+                      data-cover="${coverUrl}" 
+                      data-description="${description}" 
+                      data-publish-date="${publishDate}" 
+                      data-edition="${edition}" 
+                      data-num-pages="${numPages}" 
+                      data-genres="${genres}">
+                      View Details
+                    </button>
                   </div>
                 </div>
               </div>
@@ -134,12 +191,20 @@ document.addEventListener("DOMContentLoaded", function () {
               const author = this.getAttribute("data-author");
               const coverUrl = this.getAttribute("data-cover");
               const description = this.getAttribute("data-description");
+              const publishDate = this.getAttribute("data-publish-date");
+              const edition = this.getAttribute("data-edition");
+              const numPages = this.getAttribute("data-num-pages");
+              const genres = this.getAttribute("data-genres");
 
               displayBookDetails({
                 title,
                 author,
                 coverUrl,
                 description,
+                publishDate,
+                edition,
+                numPages,
+                genres,
               });
             });
           });
@@ -155,33 +220,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to display book details in modal
   function displayBookDetails(book) {
-    const { title, author, coverUrl, description } = book;
-    const modalBody = document.getElementById("bookDetailsBody");
-    modalBody.innerHTML = `
-      <div class="card">
-        <img src="${coverUrl}" class="card-img-top" alt="${title}">
-        <div class="card-body">
-          <h5 class="card-title">${title}</h5>
-          <p class="card-text"><strong>Author:</strong> ${author}</p>
-          <p class="card-text">${description}</p>
-        </div>
-      </div>
+    const { title, author, coverUrl, description, publishDate, edition, numPages, genres } = book;
+    const modalTitle = document.getElementById("bookTitle");
+    const modalAuthor = document.getElementById("bookAuthor");
+    const modalDetails = document.getElementById("bookDetails");
+    modalTitle.textContent = title;
+    modalAuthor.textContent = `Author: ${author}`;
+    modalDetails.innerHTML = `
+      <p><strong>Publish Date:</strong> ${publishDate}</p>
+      <p><strong>Edition:</strong> ${edition}</p>
+      <p><strong>Number of Pages:</strong> ${numPages}</p>
+      <p><strong>Genres:</strong> ${genres}</p>
+      <p>${description}</p>
     `;
     bookDetailsModal.show();
-
-    const close = document.querySelector(".modal .close");
-
-    close.addEventListener("click", function () {
-      const modal = document.getElementById("bookDetailsModal");
-      const modalInstance = bootstrap.Modal.getInstance(modal);
-      modalInstance.hide();
-    });
   }
 
-  const closeButton = document.querySelector(".modal-footer .btn btn-secondary");
-
+  // Event listener for close button in modal
+  const closeButton = document.querySelector(".modal-footer .btn.btn-secondary");
   closeButton.addEventListener("click", () => {
     bookDetailsModal.hide();
   });
 });
-

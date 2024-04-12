@@ -13,53 +13,50 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
-      <div class="container">
-        <a class="navbar-brand" href="#">LitHive</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <div class="row">
-            <div class="col">
-              <form class="form-inline my-2 my-lg-0">
-                <input
-                  class="form-control mr-sm-2"
-                  type="search"
-                  placeholder="Search for books..."
-                  aria-label="Search"
-                />
-              </form>
-            </div>
-            <div class="col-auto">
+    <div>
+      <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">LitHive</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <form class="form-inline my-2 my-lg-0">
+              <input
+                class="form-control mr-sm-2"
+                type="search"
+                placeholder="Search for books..."
+                aria-label="Search"
+              />
               <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <div class="dropdown">
+              <button
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                id="modeDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Display
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="modeDropdown">
+                <li><a class="dropdown-item" href="#" id="lightMode">Light Mode</a></li>
+                <li><a class="dropdown-item" href="#" id="darkMode">Dark Mode</a></li>
+              </ul>
             </div>
-          </div>
-          <div class="dropdown">
-            <button
-              class="btn btn-primary dropdown-toggle"
-              type="button"
-              id="modeDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >Display
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="modeDropdown">
-              <li><a class="dropdown-item" href="#" id="lightMode">Light Mode</a></li>
-              <li><a class="dropdown-item" href="#" id="darkMode">Dark Mode</a></li>
-            </ul>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
 
     <main class="main">
       <div class="container">
@@ -85,7 +82,11 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body" id="bookDetailsBody"></div>
+            <div class="modal-body" id="bookDetailsBody">
+              <h5 class="card-title" id="bookTitle"></h5>
+              <p class="card-text" id="bookAuthor"></p>
+              <div id="bookDetails"></div>
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
@@ -96,7 +97,7 @@
 
     <footer class="footer bg-dark text-white py-3">
       <div class="container">
-        <p>&copy; 2024 BookHive. All rights reserved.</p>
+        <p>&copy; 2024 LitHive. All rights reserved.</p>
       </div>
     </footer>
 
