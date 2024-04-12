@@ -45,13 +45,14 @@ document.addEventListener("DOMContentLoaded", function () {
           title: firstResult.title,
           author: firstResult.author_name ? firstResult.author_name.join(", ") : "Unknown author",
           coverUrl: `https://covers.openlibrary.org/b/id/${firstResult.cover_i}-M.jpg`,
-          description: firstResult.description
-            ? firstResult.description.value
+          description: firstResult.first_sentence
+            ? firstResult.first_sentence
             : "No description available",
-          publishDate: firstResult.publish_date ? firstResult.publish_date : "Unknown",
+          publishDate: firstResult.first_publish_year ? firstResult.first_publish_year : "Unknown",
           edition: firstResult.edition_key ? firstResult.edition_key : "Unknown",
-          numPages: firstResult.number_of_pages ? firstResult.number_of_pages : "Unknown",
+          numPages: firstResult.number_of_pages_median ? firstResult.number_of_pages_median : "Unknown",
           genres: firstResult.subject ? firstResult.subject.join(", ") : "Unknown",
+          ratings: firstResult.ratings_average ? firstResult.ratings_average : "Unknown"
         };
       } else {
         return null; // Book not found
@@ -82,7 +83,8 @@ document.addEventListener("DOMContentLoaded", function () {
                   data-publish-date="${bookDetails.publishDate}" 
                   data-edition="${bookDetails.edition}" 
                   data-num-pages="${bookDetails.numPages}" 
-                  data-genres="${bookDetails.genres}">
+                  data-genres="${bookDetails.genres}"
+                  data-ratings="${bookDetails.ratings}">
                   View Details
                 </button>
               </div>
@@ -107,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const edition = this.getAttribute("data-edition");
         const numPages = this.getAttribute("data-num-pages");
         const genres = this.getAttribute("data-genres");
+        const ratings = this.getAttribute("data-ratings");
 
         displayBookDetails({
           title,
@@ -117,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
           edition,
           numPages,
           genres,
+          ratings,
         });
       });
     });
@@ -150,13 +154,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const coverUrl = book.cover_i
               ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
               : "https://via.placeholder.com/150";
-            const description = book.description
-              ? book.description.value
+            const description = book.first_sentence
+              ? book.first_sentence
               : "No description available";
-            const publishDate = book.publish_date ? book.publish_date : "Unknown";
+            const publishDate = book.first_publish_year? book.first_publish_year : "Unknown";
             const edition = book.edition_key ? book.edition_key : "Unknown";
-            const numPages = book.number_of_pages ? book.number_of_pages : "Unknown";
+            const numPages = book.number_of_pages_median ? book.number_of_pages_median : "Unknown";
             const genres = book.subject ? book.subject.join(", ") : "Unknown";
+            const ratings = book.ratings_average ? book.ratings_average : "Unknown";
 
             const bookItem = `
               <div class="col-md-4 mb-4">
@@ -173,7 +178,8 @@ document.addEventListener("DOMContentLoaded", function () {
                       data-publish-date="${publishDate}" 
                       data-edition="${edition}" 
                       data-num-pages="${numPages}" 
-                      data-genres="${genres}">
+                      data-genres="${genres}"
+                      data-ratings="${ratings}">
                       View Details
                     </button>
                   </div>
@@ -195,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
               const edition = this.getAttribute("data-edition");
               const numPages = this.getAttribute("data-num-pages");
               const genres = this.getAttribute("data-genres");
+              const ratings = this.getAttribute("data-ratings");
 
               displayBookDetails({
                 title,
@@ -205,6 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 edition,
                 numPages,
                 genres,
+                ratings,
               });
             });
           });
@@ -220,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to display book details in modal
   function displayBookDetails(book) {
-    const { title, author, coverUrl, description, publishDate, edition, numPages, genres } = book;
+    const { title, author, coverUrl, description, publishDate, edition, numPages, genres, ratings} = book;
     const modalTitle = document.getElementById("bookTitle");
     const modalAuthor = document.getElementById("bookAuthor");
     const modalDetails = document.getElementById("bookDetails");
@@ -231,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <p><strong>Edition:</strong> ${edition}</p>
       <p><strong>Number of Pages:</strong> ${numPages}</p>
       <p><strong>Genres:</strong> ${genres}</p>
+      <p><strong>Rating:</strong> ${ratings}</p>
       <p>${description}</p>
     `;
     bookDetailsModal.show();

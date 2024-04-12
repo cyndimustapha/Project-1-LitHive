@@ -7,7 +7,8 @@
 ## Description
 LitHive is a web application that allows users to explore and discover popular books. Users can search for books, view details about them, and even switch between light and dark modes for a personalized reading experience.
 
-Features
+Features include:
+
 Search Functionality: Users can search for books using the search bar located in the navigation menu. Upon submitting a search query, relevant books will be displayed on the page.
 
 Display Modes: Users can switch between light and dark display modes to customize their reading experience. The display mode can be toggled using the dropdown menu located in the navigation menu.
