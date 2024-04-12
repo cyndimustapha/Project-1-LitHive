@@ -1,0 +1,25 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar-brand {
+    font-size: 50px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.custom-navbar {
+    background-color:rgb(11, 5, 46);
+}
+
+.main {
+    flex: 1;
+}
+
+.footer {
+    flex-shrink: 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
