@@ -41,4 +41,4 @@ Open Library API: Used for fetching book data, including titles, authors, cover 
 https://github.com/cyndimustapha
 
 ### License
-This project is licensed under the MIT License - see the LICENSE file for details.
+The content of this ite is licensec under the MIT license Copyright (c) 2018.
