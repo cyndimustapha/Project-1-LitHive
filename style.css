@@ -20,6 +20,7 @@ body {
 
 .main {
     flex: 1;
+    margin-bottom: 60px;
 }
 
 .footer {
@@ -27,4 +28,6 @@ body {
     position: fixed;
     bottom: 0;
     width: 100%;
+    padding: 20px;
 }
+
