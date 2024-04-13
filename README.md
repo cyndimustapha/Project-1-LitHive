@@ -34,8 +34,8 @@ https://cyndimustapha.github.io/Project-1-LitHive/
 
 ## Technologies Used
 HTML
-CSS (Bootstrap)
-JavaScript (Bootstrap)
+CSS 
+JavaScript
 Open Library API: Used for fetching book data, including titles, authors, cover images, descriptions, and more.
 
 ## Support and contact details
