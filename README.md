@@ -34,12 +34,12 @@ https://cyndimustapha.github.io/Project-1-LitHive/
 
 ## Technologies Used
 HTML
-CSS 
 JavaScript
+CSS
 Open Library API: Used for fetching book data, including titles, authors, cover images, descriptions, and more.
 
 ## Support and contact details
 https://github.com/cyndimustapha
 
 ### License
-The content of this ite is licensec under the MIT license Copyright (c) 2018.
+The content of this site is licensed under the MIT license Copyright (c) 2018.
